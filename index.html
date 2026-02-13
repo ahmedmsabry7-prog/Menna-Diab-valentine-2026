@@ -26,7 +26,7 @@ body{
   overflow:hidden;
 }
 
-/* floating background hearts */
+/* floating hearts background */
 .float{
   position:fixed;
   inset:0;
@@ -64,7 +64,7 @@ body{
   to{ transform:translateY(-110vh) rotate(45deg); opacity:0; }
 }
 
-/* heart icon */
+/* small heart icon */
 .icon-heart{
   display:inline-block;
   width:14px;
@@ -185,7 +185,7 @@ const float = document.getElementById("float");
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 
-/* background floating hearts */
+/* floating background hearts */
 function createHeart(){
   const h = document.createElement("div");
   h.className="fh";
@@ -211,8 +211,8 @@ yesBtn.addEventListener("click",()=>{
   yesBtn.textContent="YES!";
   yesBtn.disabled=true;
 
-  for(let i=0;i<40;i++){
-    setTimeout(createHeart,i*60);
+  for(let i=0;i<50;i++){
+    setTimeout(createHeart,i*50);
   }
 
   const msg=document.createElement("div");
