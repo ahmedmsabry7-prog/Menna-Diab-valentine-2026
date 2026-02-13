@@ -26,37 +26,37 @@ body{
   overflow:hidden;
 }
 
-/* floating hearts background */
+/* floating background hearts */
 .float{
   position:fixed;
   inset:0;
   pointer-events:none;
   overflow:hidden;
-  opacity:.35;
+  opacity:.25;
 }
 
-.heart{
+.fh{
   position:absolute;
   bottom:-30px;
-  width:16px;
-  height:16px;
+  width:14px;
+  height:14px;
   background:var(--pink);
   transform:rotate(45deg);
   animation:rise linear forwards;
 }
 
-.heart:before,
-.heart:after{
+.fh:before,
+.fh:after{
   content:"";
   position:absolute;
-  width:16px;
-  height:16px;
+  width:14px;
+  height:14px;
   background:var(--pink);
   border-radius:50%;
 }
 
-.heart:before{ left:-8px; }
-.heart:after{ top:-8px; }
+.fh:before{ left:-7px; }
+.fh:after{ top:-7px; }
 
 @keyframes rise{
   from{ transform:translateY(0) rotate(45deg); opacity:0; }
@@ -64,10 +64,35 @@ body{
   to{ transform:translateY(-110vh) rotate(45deg); opacity:0; }
 }
 
+/* heart icon */
+.icon-heart{
+  display:inline-block;
+  width:14px;
+  height:14px;
+  background:var(--pink);
+  transform:rotate(45deg);
+  position:relative;
+  margin:0 6px;
+  border-radius:3px;
+}
+
+.icon-heart:before,
+.icon-heart:after{
+  content:"";
+  position:absolute;
+  width:14px;
+  height:14px;
+  background:var(--pink);
+  border-radius:50%;
+}
+
+.icon-heart:before{ left:-7px; }
+.icon-heart:after{ top:-7px; }
+
 /* card */
 .card{
   background:white;
-  width:min(540px,92vw);
+  width:min(520px,92vw);
   padding:30px 22px;
   border-radius:22px;
   text-align:center;
@@ -82,9 +107,12 @@ h1{
 
 .name{
   margin:14px 0 18px;
-  font-size:23px;
-  font-weight:800;
+  font-size:22px;
+  font-weight:900;
   color:var(--pink);
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 .question{
@@ -93,7 +121,7 @@ h1{
 }
 
 button{
-  padding:12px 24px;
+  padding:12px 22px;
   font-size:17px;
   border:none;
   border-radius:14px;
@@ -105,7 +133,6 @@ button{
 #yes{
   background:linear-gradient(135deg,var(--pink),var(--pink2));
   color:white;
-  box-shadow:0 12px 25px rgba(255,47,109,.25);
 }
 
 #yes:active{
@@ -132,11 +159,20 @@ button{
 
 <div class="card">
   <h1>Happy Valentine’s Day 2026</h1>
-  <div class="name">Hello Menna Diab</div>
+
+  <div class="name">
+    <span class="icon-heart"></span>
+    Hello Menna Diab
+    <span class="icon-heart"></span>
+  </div>
+
   <div class="question">Will you be my Valentine?</div>
 
-  <button id="yes">Yes</button>
-  <button id="no">No</button>
+  <button id="yes">
+    Yes <span class="icon-heart"></span>
+  </button>
+
+  <button id="no">No 😛</button>
 
   <div class="footer">
     With love,<br>
@@ -152,15 +188,15 @@ const yesBtn = document.getElementById("yes");
 /* background floating hearts */
 function createHeart(){
   const h = document.createElement("div");
-  h.className="heart";
+  h.className="fh";
   h.style.left = Math.random()*100+"%";
   h.style.animationDuration = (3+Math.random()*4)+"s";
   float.appendChild(h);
   setTimeout(()=>h.remove(),7000);
 }
-setInterval(createHeart,600);
+setInterval(createHeart,700);
 
-/* run away no button */
+/* No button runs away */
 function moveNo(){
   const x = Math.random()*150 - 75;
   const y = Math.random()*100 - 50;
@@ -169,14 +205,23 @@ function moveNo(){
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
-/* yes celebration */
+/* Yes celebration */
 yesBtn.addEventListener("click",()=>{
-  for(let i=0;i<25;i++){
-    setTimeout(createHeart,i*80);
-  }
-  yesBtn.textContent="Chosen";
-  yesBtn.disabled=true;
   noBtn.style.display="none";
+  yesBtn.textContent="YES!";
+  yesBtn.disabled=true;
+
+  for(let i=0;i<40;i++){
+    setTimeout(createHeart,i*60);
+  }
+
+  const msg=document.createElement("div");
+  msg.style.marginTop="18px";
+  msg.style.fontSize="20px";
+  msg.style.fontWeight="800";
+  msg.style.color="var(--pink)";
+  msg.textContent="You are officially my Valentine!";
+  document.querySelector(".card").appendChild(msg);
 });
 </script>
 
