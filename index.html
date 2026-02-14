@@ -57,6 +57,20 @@ button{
   position:relative;
 }
 
+/* HEART RAIN */
+.rain{
+  position:absolute;
+  top:-20px;
+  font-size:20px;
+  animation:fall linear forwards;
+  pointer-events:none;
+}
+
+@keyframes fall{
+  from{ transform:translateY(-10vh); opacity:1;}
+  to{ transform:translateY(110vh); opacity:0;}
+}
+
 /* FIREWORK PARTICLES */
 .particle{
   position:absolute;
@@ -71,13 +85,13 @@ button{
 <body>
 
 <div class="card">
-  <h1>Happy Valentine’s Day 2026 ❤️</h1>
+  <h1>Happy Valentine’s Day 2026 ♥️</h1>
 
   <div class="name">💗 Hello Menna Diab 💗</div>
 
   <p>Will you be my Valentine?</p>
 
-  <button id="yes">Yes ❤️</button>
+  <button id="yes">Yes ♥️</button>
   <button id="no">No 😛</button>
 
   <div id="message"></div>
@@ -92,7 +106,19 @@ const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const message = document.getElementById("message");
 
-/* NO BUTTON RUNS AWAY */
+/* HEART RAIN */
+function createRain(){
+  const heart=document.createElement("div");
+  heart.className="rain";
+  heart.textContent="♥️";
+  heart.style.left=Math.random()*100+"%";
+  heart.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createRain,400);
+
+/* NO BUTTON RUNS */
 function moveNo(){
   const x=Math.random()*200-100;
   const y=Math.random()*150-75;
@@ -101,33 +127,33 @@ function moveNo(){
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
-/* STRONG FIREWORK SYSTEM */
+/* FIREWORKS */
 function createFirework(x,y){
-  const particles = 100;
+  const particles=100;
   for(let i=0;i<particles;i++){
-    const p = document.createElement("div");
+    const p=document.createElement("div");
     p.className="particle";
     p.style.background=`hsl(${Math.random()*360},100%,50%)`;
     p.style.left=x+"px";
     p.style.top=y+"px";
     document.body.appendChild(p);
 
-    const angle = Math.random()*2*Math.PI;
-    const velocity = Math.random()*7+4;
-    const dx = Math.cos(angle)*velocity;
-    const dy = Math.sin(angle)*velocity;
+    const angle=Math.random()*2*Math.PI;
+    const velocity=Math.random()*7+4;
+    const dx=Math.cos(angle)*velocity;
+    const dy=Math.sin(angle)*velocity;
 
-    let life = 80;
+    let life=80;
 
     function animate(){
       if(life<=0){
         p.remove();
         return;
       }
-      const rect = p.getBoundingClientRect();
-      p.style.left = rect.left + dx + "px";
-      p.style.top = rect.top + dy + "px";
-      p.style.opacity = life/80;
+      const rect=p.getBoundingClientRect();
+      p.style.left=rect.left+dx+"px";
+      p.style.top=rect.top+dy+"px";
+      p.style.opacity=life/80;
       life--;
       requestAnimationFrame(animate);
     }
@@ -135,14 +161,14 @@ function createFirework(x,y){
   }
 }
 
-/* YES CLICK FESTIVAL */
+/* YES CLICK */
 yesBtn.addEventListener("click",()=>{
   noBtn.style.display="none";
   yesBtn.disabled=true;
 
   message.innerHTML=`
     <div style="margin-top:18px;font-size:24px;font-weight:bold;color:#ff2f6d;">
-      You are officially my Valentine! ❤️
+      You are officially my Valentine! ♥️
     </div>
     <div style="margin-top:10px;font-size:20px;">
       You are lucky, my girl.
