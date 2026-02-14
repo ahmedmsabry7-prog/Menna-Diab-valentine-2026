@@ -24,6 +24,7 @@ body{
   overflow:hidden;
 }
 
+/* Card */
 .card{
   background:white;
   width:min(520px,92vw);
@@ -69,18 +70,25 @@ button{
   position:relative;
 }
 
-/* fireworks */
+/* Fireworks */
 .firework{
   position:absolute;
-  width:6px;
-  height:6px;
+  width:8px;
+  height:8px;
   border-radius:50%;
+  pointer-events:none;
   animation:explode 1s ease-out forwards;
 }
 
 @keyframes explode{
-  from{ transform:scale(0); opacity:1; }
-  to{ transform:scale(8); opacity:0; }
+  from{
+    transform:scale(0);
+    opacity:1;
+  }
+  to{
+    transform:scale(10);
+    opacity:0;
+  }
 }
 </style>
 </head>
@@ -108,7 +116,7 @@ const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const message = document.getElementById("message");
 
-/* no runs away */
+/* No button runs away */
 function moveNo(){
   const x = Math.random()*200 - 100;
   const y = Math.random()*120 - 60;
@@ -117,9 +125,9 @@ function moveNo(){
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
-/* fireworks */
+/* Create firework burst */
 function createFirework(x,y){
-  for(let i=0;i<20;i++){
+  for(let i=0;i<25;i++){
     const f=document.createElement("div");
     f.className="firework";
     f.style.left=x+"px";
@@ -130,6 +138,7 @@ function createFirework(x,y){
   }
 }
 
+/* Yes click effect */
 yesBtn.addEventListener("click",()=>{
   noBtn.style.display="none";
   yesBtn.disabled=true;
@@ -143,7 +152,7 @@ yesBtn.addEventListener("click",()=>{
     </div>
   `;
 
-  for(let i=0;i<5;i++){
+  for(let i=0;i<6;i++){
     setTimeout(()=>{
       createFirework(
         Math.random()*window.innerWidth,
