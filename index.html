@@ -1,16 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine 2026</title>
 
 <style>
-:root{
-  --pink:#ff2f6d;
-  --pink2:#ff6b9a;
-}
-
 body{
   margin:0;
   height:100vh;
@@ -18,31 +13,9 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
   background:linear-gradient(135deg,#ffd6e7,#ffeaf3);
 }
-
-/* CSS HEART */
-.heart{
-  display:inline-block;
-  width:14px;
-  height:14px;
-  background:#ff0000;
-  transform:rotate(45deg);
-  position:relative;
-  margin:0 6px;
-}
-.heart:before,
-.heart:after{
-  content:"";
-  position:absolute;
-  width:14px;
-  height:14px;
-  background:#ff0000;
-  border-radius:50%;
-}
-.heart:before{ left:-7px; }
-.heart:after{ top:-7px; }
 
 /* CARD */
 .card{
@@ -55,15 +28,12 @@ body{
   z-index:2;
 }
 
-h1{
-  margin:0;
-  font-size:26px;
-}
+h1{ margin:0; font-size:26px; }
 
 .name{
   font-size:22px;
   font-weight:bold;
-  color:var(--pink);
+  color:#ff2f6d;
   margin:15px 0;
 }
 
@@ -74,10 +44,11 @@ button{
   border-radius:12px;
   margin:8px;
   cursor:pointer;
+  transition:.2s;
 }
 
 #yes{
-  background:var(--pink);
+  background:#ff2f6d;
   color:white;
 }
 
@@ -100,24 +71,14 @@ button{
 <body>
 
 <div class="card">
-  <h1>
-    Happy Valentine’s Day 2026
-    <span class="heart"></span>
-  </h1>
+  <h1>Happy Valentine’s Day 2026 ❤️</h1>
 
-  <div class="name">
-    <span class="heart"></span>
-    Hello Menna Diab
-    <span class="heart"></span>
-  </div>
+  <div class="name">💗 Hello Menna Diab 💗</div>
 
   <p>Will you be my Valentine?</p>
 
-  <button id="yes">
-    Yes <span class="heart"></span>
-  </button>
-
-  <button id="no">No ;P</button>
+  <button id="yes">Yes ❤️</button>
+  <button id="no">No 😛</button>
 
   <div id="message"></div>
 
@@ -142,7 +103,7 @@ noBtn.addEventListener("touchstart",moveNo);
 
 /* STRONG FIREWORK SYSTEM */
 function createFirework(x,y){
-  const particles = 90;
+  const particles = 100;
   for(let i=0;i<particles;i++){
     const p = document.createElement("div");
     p.className="particle";
@@ -156,7 +117,7 @@ function createFirework(x,y){
     const dx = Math.cos(angle)*velocity;
     const dy = Math.sin(angle)*velocity;
 
-    let life = 70;
+    let life = 80;
 
     function animate(){
       if(life<=0){
@@ -166,7 +127,7 @@ function createFirework(x,y){
       const rect = p.getBoundingClientRect();
       p.style.left = rect.left + dx + "px";
       p.style.top = rect.top + dy + "px";
-      p.style.opacity = life/70;
+      p.style.opacity = life/80;
       life--;
       requestAnimationFrame(animate);
     }
@@ -181,14 +142,14 @@ yesBtn.addEventListener("click",()=>{
 
   message.innerHTML=`
     <div style="margin-top:18px;font-size:24px;font-weight:bold;color:#ff2f6d;">
-      You are officially my Valentine!
+      You are officially my Valentine! ❤️
     </div>
     <div style="margin-top:10px;font-size:20px;">
       You are lucky, my girl.
     </div>
   `;
 
-  for(let i=0;i<14;i++){
+  for(let i=0;i<15;i++){
     setTimeout(()=>{
       createFirework(
         Math.random()*window.innerWidth,
