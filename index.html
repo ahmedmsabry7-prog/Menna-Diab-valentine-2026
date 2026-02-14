@@ -6,6 +6,11 @@
 <title>Valentine 2026</title>
 
 <style>
+:root{
+  --pink:#ff2f6d;
+  --pink2:#ff6b9a;
+}
+
 body{
   margin:0;
   height:100vh;
@@ -17,50 +22,48 @@ body{
   background:linear-gradient(135deg,#ffd6e7,#ffeaf3);
 }
 
-/* Floating hearts background */
-.bg-heart{
-  position:absolute;
-  width:15px;
-  height:15px;
-  background:#ff2f6d;
+/* CSS HEART */
+.heart{
+  display:inline-block;
+  width:14px;
+  height:14px;
+  background:#ff0000;
   transform:rotate(45deg);
-  animation:floatUp 6s linear infinite;
+  position:relative;
+  margin:0 6px;
 }
-
-.bg-heart:before,
-.bg-heart:after{
+.heart:before,
+.heart:after{
   content:"";
   position:absolute;
-  width:15px;
-  height:15px;
-  background:#ff2f6d;
+  width:14px;
+  height:14px;
+  background:#ff0000;
   border-radius:50%;
 }
+.heart:before{ left:-7px; }
+.heart:after{ top:-7px; }
 
-.bg-heart:before{ left:-7px; }
-.bg-heart:after{ top:-7px; }
-
-@keyframes floatUp{
-  from{ transform:translateY(100vh) rotate(45deg); opacity:1;}
-  to{ transform:translateY(-10vh) rotate(45deg); opacity:0;}
-}
-
+/* CARD */
 .card{
   background:white;
   padding:30px;
   border-radius:20px;
   text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.15);
+  box-shadow:0 20px 40px rgba(0,0,0,.2);
   position:relative;
   z-index:2;
 }
 
-h1{ margin:0; }
+h1{
+  margin:0;
+  font-size:26px;
+}
 
 .name{
   font-size:22px;
   font-weight:bold;
-  color:#ff2f6d;
+  color:var(--pink);
   margin:15px 0;
 }
 
@@ -74,25 +77,22 @@ button{
 }
 
 #yes{
-  background:#ff2f6d;
+  background:var(--pink);
   color:white;
 }
 
 #no{
   background:#eee;
+  position:relative;
 }
 
-.firework{
+/* FIREWORK PARTICLES */
+.particle{
   position:absolute;
-  width:8px;
-  height:8px;
+  width:6px;
+  height:6px;
   border-radius:50%;
-  animation:explode 1s ease-out forwards;
-}
-
-@keyframes explode{
-  from{ transform:scale(0); opacity:1;}
-  to{ transform:scale(12); opacity:0;}
+  pointer-events:none;
 }
 </style>
 </head>
@@ -100,12 +100,24 @@ button{
 <body>
 
 <div class="card">
-  <h1>Happy Valentine’s Day 2026</h1>
-  <div class="name">💗 Hello Menna Diab 💗</div>
+  <h1>
+    Happy Valentine’s Day 2026
+    <span class="heart"></span>
+  </h1>
+
+  <div class="name">
+    <span class="heart"></span>
+    Hello Menna Diab
+    <span class="heart"></span>
+  </div>
+
   <p>Will you be my Valentine?</p>
 
-  <button id="yes">Yes 💗</button>
-  <button id="no">No 😛</button>
+  <button id="yes">
+    Yes <span class="heart"></span>
+  </button>
+
+  <button id="no">No ;P</button>
 
   <div id="message"></div>
 
@@ -119,18 +131,7 @@ const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const message = document.getElementById("message");
 
-/* Background hearts */
-function createBgHeart(){
-  const h=document.createElement("div");
-  h.className="bg-heart";
-  h.style.left=Math.random()*100+"%";
-  h.style.animationDuration=(4+Math.random()*4)+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),8000);
-}
-setInterval(createBgHeart,500);
-
-/* No runs away */
+/* NO BUTTON RUNS AWAY */
 function moveNo(){
   const x=Math.random()*200-100;
   const y=Math.random()*150-75;
@@ -139,40 +140,61 @@ function moveNo(){
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
-/* Fireworks */
+/* STRONG FIREWORK SYSTEM */
 function createFirework(x,y){
-  for(let i=0;i<30;i++){
-    const f=document.createElement("div");
-    f.className="firework";
-    f.style.left=x+"px";
-    f.style.top=y+"px";
-    f.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    document.body.appendChild(f);
-    setTimeout(()=>f.remove(),1000);
+  const particles = 90;
+  for(let i=0;i<particles;i++){
+    const p = document.createElement("div");
+    p.className="particle";
+    p.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    p.style.left=x+"px";
+    p.style.top=y+"px";
+    document.body.appendChild(p);
+
+    const angle = Math.random()*2*Math.PI;
+    const velocity = Math.random()*7+4;
+    const dx = Math.cos(angle)*velocity;
+    const dy = Math.sin(angle)*velocity;
+
+    let life = 70;
+
+    function animate(){
+      if(life<=0){
+        p.remove();
+        return;
+      }
+      const rect = p.getBoundingClientRect();
+      p.style.left = rect.left + dx + "px";
+      p.style.top = rect.top + dy + "px";
+      p.style.opacity = life/70;
+      life--;
+      requestAnimationFrame(animate);
+    }
+    animate();
   }
 }
 
-/* YES click */
+/* YES CLICK FESTIVAL */
 yesBtn.addEventListener("click",()=>{
   noBtn.style.display="none";
   yesBtn.disabled=true;
 
   message.innerHTML=`
-    <div style="margin-top:18px;font-size:22px;font-weight:bold;color:#ff2f6d;">
+    <div style="margin-top:18px;font-size:24px;font-weight:bold;color:#ff2f6d;">
       You are officially my Valentine!
     </div>
-    <div style="margin-top:8px;font-size:18px;">
+    <div style="margin-top:10px;font-size:20px;">
       You are lucky, my girl.
     </div>
   `;
 
-  for(let i=0;i<6;i++){
+  for(let i=0;i<14;i++){
     setTimeout(()=>{
       createFirework(
         Math.random()*window.innerWidth,
-        Math.random()*window.innerHeight/2
+        Math.random()*window.innerHeight
       );
-    },i*400);
+    }, i*250);
   }
 });
 </script>
