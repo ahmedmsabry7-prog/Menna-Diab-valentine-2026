@@ -13,8 +13,6 @@
   --bg2:#ffeaf3;
 }
 
-*{box-sizing:border-box;}
-
 body{
   margin:0;
   min-height:100vh;
@@ -26,70 +24,6 @@ body{
   overflow:hidden;
 }
 
-/* floating hearts background */
-.float{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  overflow:hidden;
-  opacity:.25;
-}
-
-.fh{
-  position:absolute;
-  bottom:-30px;
-  width:14px;
-  height:14px;
-  background:var(--pink);
-  transform:rotate(45deg);
-  animation:rise linear forwards;
-}
-
-.fh:before,
-.fh:after{
-  content:"";
-  position:absolute;
-  width:14px;
-  height:14px;
-  background:var(--pink);
-  border-radius:50%;
-}
-
-.fh:before{ left:-7px; }
-.fh:after{ top:-7px; }
-
-@keyframes rise{
-  from{ transform:translateY(0) rotate(45deg); opacity:0; }
-  20%{ opacity:1; }
-  to{ transform:translateY(-110vh) rotate(45deg); opacity:0; }
-}
-
-/* small heart icon */
-.icon-heart{
-  display:inline-block;
-  width:14px;
-  height:14px;
-  background:var(--pink);
-  transform:rotate(45deg);
-  position:relative;
-  margin:0 6px;
-  border-radius:3px;
-}
-
-.icon-heart:before,
-.icon-heart:after{
-  content:"";
-  position:absolute;
-  width:14px;
-  height:14px;
-  background:var(--pink);
-  border-radius:50%;
-}
-
-.icon-heart:before{ left:-7px; }
-.icon-heart:after{ top:-7px; }
-
-/* card */
 .card{
   background:white;
   width:min(520px,92vw);
@@ -98,21 +32,16 @@ body{
   text-align:center;
   box-shadow:0 20px 45px rgba(0,0,0,.15);
   position:relative;
+  z-index:2;
 }
 
-h1{
-  margin:0;
-  font-size:26px;
-}
+h1{ margin:0; font-size:26px; }
 
 .name{
   margin:14px 0 18px;
   font-size:22px;
   font-weight:900;
   color:var(--pink);
-  display:flex;
-  justify-content:center;
-  align-items:center;
 }
 
 .question{
@@ -135,93 +64,93 @@ button{
   color:white;
 }
 
-#yes:active{
-  transform:scale(.95);
-}
-
 #no{
   background:#eee;
-  color:#333;
   position:relative;
 }
 
-.footer{
-  margin-top:22px;
-  font-size:14px;
-  opacity:.7;
+/* fireworks */
+.firework{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+  from{ transform:scale(0); opacity:1; }
+  to{ transform:scale(8); opacity:0; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="float" id="float"></div>
-
 <div class="card">
   <h1>Happy Valentine’s Day 2026</h1>
-
-  <div class="name">
-    <span class="icon-heart"></span>
-    Hello Menna Diab
-    <span class="icon-heart"></span>
-  </div>
-
+  <div class="name">Hello Menna Diab</div>
   <div class="question">Will you be my Valentine?</div>
 
-  <button id="yes">
-    Yes <span class="icon-heart"></span>
-  </button>
-
+  <button id="yes">Yes</button>
   <button id="no">No 😛</button>
 
-  <div class="footer">
+  <div id="message"></div>
+
+  <div style="margin-top:20px;font-size:14px;opacity:.7;">
     With love,<br>
     <strong>Ahmed Sabry</strong>
   </div>
 </div>
 
 <script>
-const float = document.getElementById("float");
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
+const message = document.getElementById("message");
 
-/* floating background hearts */
-function createHeart(){
-  const h = document.createElement("div");
-  h.className="fh";
-  h.style.left = Math.random()*100+"%";
-  h.style.animationDuration = (3+Math.random()*4)+"s";
-  float.appendChild(h);
-  setTimeout(()=>h.remove(),7000);
-}
-setInterval(createHeart,700);
-
-/* No button runs away */
+/* no runs away */
 function moveNo(){
-  const x = Math.random()*150 - 75;
-  const y = Math.random()*100 - 50;
+  const x = Math.random()*200 - 100;
+  const y = Math.random()*120 - 60;
   noBtn.style.transform=`translate(${x}px,${y}px)`;
 }
 noBtn.addEventListener("mouseover",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
-/* Yes celebration */
+/* fireworks */
+function createFirework(x,y){
+  for(let i=0;i<20;i++){
+    const f=document.createElement("div");
+    f.className="firework";
+    f.style.left=x+"px";
+    f.style.top=y+"px";
+    f.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1000);
+  }
+}
+
 yesBtn.addEventListener("click",()=>{
   noBtn.style.display="none";
-  yesBtn.textContent="YES!";
   yesBtn.disabled=true;
 
-  for(let i=0;i<50;i++){
-    setTimeout(createHeart,i*50);
-  }
+  message.innerHTML = `
+    <div style="margin-top:18px;font-size:22px;font-weight:800;color:#ff2f6d;">
+      You are officially my Valentine!
+    </div>
+    <div style="margin-top:8px;font-size:18px;">
+      You are lucky, my girl.
+    </div>
+  `;
 
-  const msg=document.createElement("div");
-  msg.style.marginTop="18px";
-  msg.style.fontSize="20px";
-  msg.style.fontWeight="800";
-  msg.style.color="var(--pink)";
-  msg.textContent="You are officially my Valentine!";
-  document.querySelector(".card").appendChild(msg);
+  for(let i=0;i<5;i++){
+    setTimeout(()=>{
+      createFirework(
+        Math.random()*window.innerWidth,
+        Math.random()*window.innerHeight/2
+      );
+    }, i*400);
+  }
 });
 </script>
 
